@@ -1,18 +1,13 @@
 
 
-<h1 align="center">Antd Theme</h1>
+<h1 align="center">DT Theme</h1>
 
 <p align="center">
-  Set the theme online, generate less and js files directly <a href="https://antdtheme.com">antdtheme.com</a>
+  数栈UI4.0规范样式
 </p>
 
-![](https://github.com/gzgogo/antd-theme/raw/master/screenshot.png)
+## 主要样式文件
 
-
-## How to add your theme to preview?
-1. Visit [antdtheme.com](https://antdtheme.com)，Click "Save" after editing is complete
-2. Publish your theme to npm (Optional)
-3. Import and add your theme in the file: theme/index.js. The key is the name of your theme in the list.
-4. Thanks for your participation and contribution!
-
-![](https://github.com/gzgogo/antd-theme/raw/master/guide.png)
+- src
+| — stylesheet/dt-theme (样式名覆盖)
+| — theme/dt-theme.js (样式变量覆盖)
