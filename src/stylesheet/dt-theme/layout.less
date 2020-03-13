@@ -1,7 +1,7 @@
 @import './const.less';
 
 .ant-layout-header {
-    background: #080A1A;
+    background: #080A1A !important;
     .ant-menu {
         background: #080A1A;
         color: #ABB2C2;
@@ -36,7 +36,7 @@
 }
 
 .ant-layout-sider {
-    background: #111426;
+    background: #111426 !important;
     border-top: 20px solid #111426;
     .ant-menu {
         background: #111426;
@@ -47,6 +47,9 @@
     }
     .ant-menu-item > a:hover {
         color: #FFFFFF;
+    }
+    .ant-menu-submenu > .ant-menu {
+        background-color: #111426;
     }
     .ant-menu-submenu {
         background-color: #111426;

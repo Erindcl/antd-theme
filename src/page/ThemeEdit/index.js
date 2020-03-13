@@ -118,10 +118,8 @@ class ThemeEdit extends Component {
             </Col>
             <Col xs={0} sm={14}>
               <Menu
-                theme="dark"
                 mode="horizontal"
                 defaultSelectedKeys={['1']}
-                style={{ lineHeight: '64px' }}
               >
                 <Menu.Item key="1">nav 1</Menu.Item>
                 <Menu.Item key="2">nav 2</Menu.Item>

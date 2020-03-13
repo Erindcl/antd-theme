@@ -42,6 +42,22 @@ const TabsPreview = ({ size, disabled }) => (
           </TabPane>
         </Tabs>
       </div>
+      <div className="component-row">
+        <Tabs
+          className="dt-tab"
+          size={size}
+        >
+          <TabPane tab="dt-tab 1" key="1" disabled={disabled}>
+            Content of dt-tab Pane 1
+          </TabPane>
+          <TabPane tab="dt-tab 2" key="2" disabled={disabled}>
+            Content of dt-tab Pane 2
+          </TabPane>
+          <TabPane tab="dt-tab 3" key="3" disabled={disabled}>
+            Content of dt-tab Pane 3
+          </TabPane>
+        </Tabs>
+      </div>
     </div>
   </PreviewWrapper>
 );

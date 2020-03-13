@@ -108,14 +108,34 @@
     color: @blackBF;
 }
 .ant-btn-danger, .ant-btn-danger.ant-btn:focus {
-    background-color: @red;
+    background-color: @red !important;
     border-color: @red;
     color: #fff;
 }
-.ant-btn-danger.ant-btn:hover,
+.ant-btn-danger.ant-btn:hover {
+    color: #fff;
+    background-color: #ff7875 !important;
+    border-color: #ff7875;
+}
 .ant-btn-danger.ant-btn:active,
 .ant-btn-danger.ant-btn.active {
     color: #fff;
-    background-color: #ff7875;
+    background-color: @red !important;
+    border-color: @red;
+}
+.ant-btn-background-ghost.ant-btn-danger {
+    color: @red;
+    background-color: transparent !important;
+    border-color: @red;
+}
+.ant-btn-background-ghost.ant-btn-danger:hover, .ant-btn-background-ghost.ant-btn-danger:focus {
+    color: #fff;
+    background-color: #ff7875 !important;
     border-color: #ff7875;
+}
+.ant-btn-background-ghost.ant-btn-danger:active,
+.ant-btn-background-ghost.ant-btn-danger.active {
+    color: #fff;
+    background-color: @red !important;
+    border-color: @red;
 }

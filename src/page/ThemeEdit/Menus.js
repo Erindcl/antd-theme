@@ -13,7 +13,6 @@ class Menus extends Component {
         theme={dark ? 'dark' : 'light'}
         defaultSelectedKeys={['1']}
         defaultOpenKeys={['sub1']}
-        style={{ height: '100%', borderRight: 0 }}
       >
         <Menu.Item key="Color"><a href="#Color">Color</a></Menu.Item>
         <Menu.Item key="Typography"><a href="#Typography">Typography</a></Menu.Item>
