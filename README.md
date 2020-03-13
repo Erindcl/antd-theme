@@ -8,9 +8,8 @@
 
 ## 主要样式文件
 
-- src
-| — stylesheet/dt-theme (样式名覆盖)
-| — theme/dt-theme.js (样式变量覆盖)
+- src/stylesheet/dt-theme (样式名覆盖)
+- src/theme/dt-theme.js (样式变量覆盖)
 
 ## 如何在数栈应用中使用
 
