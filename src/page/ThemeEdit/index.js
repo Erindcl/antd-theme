@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Draggable from 'react-draggable';
+// import Draggable from 'react-draggable';
 import { Row, Col, Breadcrumb, Menu, Layout, Switch, Radio, Form, BackTop, Button, Alert } from 'antd';
-import ThemeCard from 'component/ThemeCard';
+// import ThemeCard from 'component/ThemeCard';
 import Menus from './Menus';
 import {
   ColorPreview,
@@ -80,7 +80,7 @@ class ThemeEdit extends Component {
   };
 
   render() {
-    const { theme } = this.props.match.params;
+    // const { theme } = this.props.match.params;
     const { size, disabled, darkMenu, showBreadcrumb } = this.state;
 
     const antdVersion = `antd v${require('antd/package.json').version}`;
@@ -247,14 +247,14 @@ class ThemeEdit extends Component {
         {/* <div className="theme-card-wrapper">
           <ThemeCard defaultTheme={this.state.defaultTheme} />
         </div> */}
-        <Draggable
+        {/* <Draggable
           bounds="parent"
           handle=".theme-card .ant-card-head"
         >
           <div className="theme-card-wrapper">
             <ThemeCard theme={theme} />
           </div>
-        </Draggable>
+        </Draggable> */}
         <BackTop target={() => document.getElementById('preview-content')} />
       </Layout>
     );
