@@ -1805,6 +1805,7 @@ this.tinycolor = tinycolor;
 
 //Dropdown
 @dropdown-vertical-padding: 5px;
+@dropdown-edge-child-vertical-padding: 4px;
 @dropdown-font-size: @font-size-base;
 @dropdown-line-height: 22px;
 
@@ -1817,6 +1818,8 @@ this.tinycolor = tinycolor;
 @form-item-trailing-colon: true;
 @form-vertical-label-padding: 0 0 8px;
 @form-vertical-label-margin: 0;
+@form-item-label-colon-margin-right: 8px;
+@form-item-label-colon-margin-left: 2px;
 @form-error-input-bg: @input-bg;
 
 // Input
@@ -1835,6 +1838,7 @@ this.tinycolor = tinycolor;
 @input-color: @text-color;
 @input-border-color: @border-color-base;
 @input-bg: @component-background;
+@input-number-hover-border-color: @input-hover-border-color;
 @input-number-handler-active-bg: #f4f4f4;
 @input-number-handler-hover-bg: @primary-5;
 @input-number-handler-bg: @component-background;
@@ -1849,8 +1853,20 @@ this.tinycolor = tinycolor;
 @select-border-color: @border-color-base;
 @select-item-selected-font-weight: 600;
 @select-dropdown-bg: @component-background;
+@select-dropdown-vertical-padding: @dropdown-vertical-padding;
+@select-dropdown-edge-child-vertical-padding: @dropdown-edge-child-vertical-padding;
+@select-dropdown-font-size: @dropdown-font-size;
+@select-dropdown-line-height: @dropdown-line-height;
 @select-item-selected-bg: @background-color-light;
 @select-item-active-bg: @item-active-bg;
+@select-background: @component-background;
+
+// Cascader
+// ----
+@cascader-dropdown-vertical-padding: @dropdown-vertical-padding;
+@cascader-dropdown-edge-child-vertical-padding: @dropdown-edge-child-vertical-padding;
+@cascader-dropdown-font-size: @dropdown-font-size;
+@cascader-dropdown-line-height: @dropdown-line-height;
 
 // Anchor
 // ---
@@ -1893,6 +1909,7 @@ this.tinycolor = tinycolor;
 // --
 @modal-body-padding: 24px;
 @modal-header-bg: @component-background;
+@modal-heading-color: @heading-color;
 @modal-footer-bg: transparent;
 @modal-footer-border-color-split: @border-color-split;
 @modal-mask-bg: fade(@black, 45%);
@@ -1922,11 +1939,6 @@ this.tinycolor = tinycolor;
 @menu-item-vertical-margin: 4px;
 @menu-item-font-size: @font-size-base;
 @menu-item-boundary-margin: 8px;
-@menu-icon-size: @font-size-base;
-@menu-icon-size-lg: @font-size-lg;
-@menu-dark-selected-item-icon-color: @white;
-@menu-dark-selected-item-text-color: @white;
-@dark-menu-item-hover-bg: transparent;
 
 // dark theme
 @menu-dark-color: @text-color-secondary-dark;
@@ -1961,6 +1973,7 @@ this.tinycolor = tinycolor;
 @table-border-radius-base: @border-radius-base;
 @table-footer-bg: @background-color-light;
 @table-footer-color: @heading-color;
+@table-header-bg-sm: transparent;
 
 // Tag
 // --
@@ -2197,6 +2210,8 @@ this.tinycolor = tinycolor;
 // Typography
 // ---
 @typography-title-font-weight: 600;
+@typography-title-margin-top: 1.2em;
+@typography-title-margin-bottom: 0.5em;
 
 // Mixins
 // --------------------------------------------------
@@ -2353,6 +2368,56 @@ this.tinycolor = tinycolor;
   &:active {
     color: @link-active-color;
   }
+}
+
+// =============== Common ===============
+.typography-paragraph() {
+  margin-bottom: 1em;
+}
+
+.typography-title(@fontSize; @fontWeight; @lineHeight; @headingColor; @headingMarginBottom;) {
+  margin-bottom: @headingMarginBottom;
+  color: @headingColor;
+  font-weight: @fontWeight;
+  font-size: @fontSize;
+  line-height: @lineHeight;
+}
+
+.typography-title-1() {
+  .typography-title(
+    @heading-1-size,
+    @typography-title-font-weight,
+    1.23,
+    @heading-color,
+    @typography-title-margin-bottom
+  );
+}
+.typography-title-2() {
+  .typography-title(
+    @heading-2-size,
+    @typography-title-font-weight,
+    1.35,
+    @heading-color,
+    @typography-title-margin-bottom
+  );
+}
+.typography-title-3() {
+  .typography-title(
+    @heading-3-size,
+    @typography-title-font-weight,
+    1.35,
+    @heading-color,
+    @typography-title-margin-bottom
+  );
+}
+.typography-title-4() {
+  .typography-title(
+    @heading-4-size,
+    @typography-title-font-weight,
+    1.4,
+    @heading-color,
+    @typography-title-margin-bottom
+  );
 }
 
 /* stylelint-disable at-rule-no-unknown */
@@ -3495,6 +3560,7 @@ html {
     line-height: 22px;
     background-color: transparent;
     border: none;
+    outline: none;
     cursor: pointer;
 
     .@{iconfont-css-prefix}-close {
@@ -3556,7 +3622,7 @@ html {
     display: block;
   }
 
-  &&-close {
+  &&-closing {
     height: 0 !important;
     margin: 0;
     padding-top: 0;
@@ -3989,13 +4055,14 @@ html {
       float: none;
     }
 
-    // reset border for Select, DatePicker, AutoComplete, Cascader, Mention, TimePicker
+    // reset border for Select, DatePicker, AutoComplete, Cascader, Mention, TimePicker, Input
     & > .@{ant-prefix}-select > .@{ant-prefix}-select-selection,
     & > .@{ant-prefix}-calendar-picker .@{ant-prefix}-input,
     & > .@{ant-prefix}-select-auto-complete .@{ant-prefix}-input,
     & > .@{ant-prefix}-cascader-picker .@{ant-prefix}-input,
     & > .@{ant-prefix}-mention-wrapper .@{ant-prefix}-mention-editor,
-    & > .@{ant-prefix}-time-picker .@{ant-prefix}-time-picker-input {
+    & > .@{ant-prefix}-time-picker .@{ant-prefix}-time-picker-input,
+    & > .@{ant-prefix}-input-group-wrapper .@{ant-prefix}-input {
       border-right-width: @border-width-base;
       border-radius: 0;
 
@@ -4099,8 +4166,33 @@ html {
     padding-right: @input-padding-horizontal-base + @input-affix-width;
   }
 
-  &.@{inputClass}-affix-wrapper-with-clear-btn .@{inputClass}:not(:last-child) {
+  &.@{inputClass}-affix-wrapper-input-with-clear-btn .@{inputClass}:not(:last-child) {
     padding-right: @input-padding-horizontal-base + @input-affix-with-clear-btn-width;
+  }
+
+  &.@{inputClass}-affix-wrapper-textarea-with-clear-btn .@{inputClass} {
+    padding-right: 22px;
+  }
+}
+
+.clear-icon() {
+  color: @disabled-color;
+  font-size: @font-size-sm;
+  // https://github.com/ant-design/ant-design/pull/18151
+  // https://codesandbox.io/s/wizardly-sun-u10br
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: @text-color-secondary;
+  }
+
+  &:active {
+    color: @text-color;
+  }
+
+  + i {
+    margin-left: 6px;
   }
 }
 
@@ -4664,6 +4756,9 @@ html {
       z-index: 0;
     }
   }
+  > .@{btnClassName}-icon-only {
+    font-size: @font-size-base;
+  }
   // size
   &-lg > .@{btnClassName},
   &-lg > span > .@{btnClassName} {
@@ -4903,7 +4998,15 @@ html {
 // Button styles
 // -----------------------------
 .@{btn-prefix-cls} {
-  line-height: @line-height-base;
+  // Fixing https://github.com/ant-design/ant-design/issues/12978
+  // Fixing https://github.com/ant-design/ant-design/issues/20058
+  // Fixing https://github.com/ant-design/ant-design/issues/19972
+  // Fixing https://github.com/ant-design/ant-design/issues/12978
+  // Fixing https://github.com/ant-design/ant-design/issues/18107
+  // Fixing https://github.com/ant-design/ant-design/issues/13214
+  // It is a render problem of chrome, which is only happened in the codesandbox demo
+  // 0.001px solution works and I don't why
+  line-height: @line-height-base - 0.001;
   .btn;
   .btn-default;
 
@@ -4964,6 +5067,10 @@ html {
 
   &-icon-only {
     .btn-square(@btn-prefix-cls);
+
+    > i {
+      vertical-align: middle;
+    }
   }
 
   &-round {
@@ -5009,7 +5116,9 @@ html {
 
   &&-loading {
     position: relative;
-    pointer-events: none;
+    &:not([disabled]) {
+      pointer-events: none;
+    }
   }
 
   &&-loading::before {
@@ -6009,7 +6118,7 @@ a.@{btn-prefix-cls} {
   &-menus {
     position: absolute;
     z-index: @zindex-dropdown;
-    font-size: @font-size-base;
+    font-size: @cascader-dropdown-font-size;
     white-space: nowrap;
     background: @component-background;
     border-radius: @border-radius-base;
@@ -6018,7 +6127,6 @@ a.@{btn-prefix-cls} {
     ul,
     ol {
       margin: 0;
-      padding: 0;
       list-style: none;
     }
 
@@ -6049,7 +6157,7 @@ a.@{btn-prefix-cls} {
     min-width: 111px;
     height: 180px;
     margin: 0;
-    padding: 0;
+    padding: @cascader-dropdown-edge-child-vertical-padding 0;
     overflow: auto;
     vertical-align: top;
     list-style: none;
@@ -6069,8 +6177,8 @@ a.@{btn-prefix-cls} {
     }
   }
   &-menu-item {
-    padding: 5px @control-padding-horizontal;
-    line-height: 22px;
+    padding: @cascader-dropdown-vertical-padding @control-padding-horizontal;
+    line-height: @cascader-dropdown-line-height;
     white-space: nowrap;
     cursor: pointer;
     transition: all 0.3s;
@@ -6172,7 +6280,7 @@ a.@{btn-prefix-cls} {
 
         position: absolute;
         top: 50%;
-        left: 21%;
+        left: 22%;
         display: table;
         width: @check-width;
         height: @check-height;
@@ -6262,6 +6370,9 @@ a.@{btn-prefix-cls} {
     display: inline-block;
     line-height: unset;
     cursor: pointer;
+    &.@{checkbox-prefix-cls}-wrapper-disabled {
+      cursor: not-allowed;
+    }
     & + & {
       margin-left: 8px;
     }
@@ -6398,7 +6509,7 @@ a.@{btn-prefix-cls} {
 
         .@{collapse-prefix-cls}-arrow {
           right: @padding-md;
-          left: initial;
+          left: auto;
         }
       }
     }
@@ -6492,12 +6603,12 @@ a.@{btn-prefix-cls} {
 
     &-author {
       display: flex;
+      flex-wrap: wrap;
       justify-content: flex-start;
       margin-bottom: 4px;
       font-size: @comment-font-size-base;
       & > a,
       & > span {
-        height: 18px;
         padding-right: 8px;
         font-size: @comment-font-size-sm;
         line-height: 18px;
@@ -8148,6 +8259,7 @@ a.@{btn-prefix-cls} {
   &-content {
     position: relative;
     z-index: 1;
+    overflow: auto;
     background-color: @component-background;
     background-clip: padding-box;
     border: 0;
@@ -8203,6 +8315,10 @@ a.@{btn-prefix-cls} {
     font-size: @font-size-base;
     line-height: @line-height-base;
     word-wrap: break-word;
+  }
+  &-wrapper-body {
+    height: 100%;
+    overflow: auto;
   }
 
   &-mask {
@@ -8280,7 +8396,7 @@ a.@{btn-prefix-cls} {
   &-menu {
     position: relative;
     margin: 0;
-    padding: 4px 0;
+    padding: @dropdown-edge-child-vertical-padding 0;
     text-align: left;
     list-style-type: none;
     background-color: @component-background;
@@ -8303,6 +8419,17 @@ a.@{btn-prefix-cls} {
       > .@{dropdown-prefix-cls}-menu {
         transform-origin: 0 0;
       }
+
+      ul,
+      li {
+        list-style: none;
+      }
+
+      ul {
+        margin-right: 0.3em;
+        margin-left: 0.3em;
+        padding: 0;
+      }
     }
 
     &-item,
@@ -8318,9 +8445,11 @@ a.@{btn-prefix-cls} {
       cursor: pointer;
       transition: all 0.3s;
 
-      > .anticon:first-child {
+      > .anticon:first-child,
+      > span > .anticon:first-child {
         min-width: 12px;
         margin-right: 8px;
+        font-size: @font-size-sm;
       }
 
       > a {
@@ -8329,6 +8458,18 @@ a.@{btn-prefix-cls} {
         padding: 5px @control-padding-horizontal;
         color: @text-color;
         transition: all 0.3s;
+      }
+
+      &:first-child {
+        & when (@dropdown-edge-child-vertical-padding = 0) {
+          border-radius: @border-radius-base @border-radius-base 0 0;
+        }
+      }
+
+      &:last-child {
+        & when (@dropdown-edge-child-vertical-padding = 0) {
+          border-radius: 0 0 @border-radius-base @border-radius-base;
+        }
       }
 
       &-selected,
@@ -8359,6 +8500,7 @@ a.@{btn-prefix-cls} {
         line-height: 0;
         background-color: @border-color-split;
       }
+
       .@{dropdown-prefix-cls}-menu-submenu-arrow {
         position: absolute;
         right: @padding-xs;
@@ -8368,6 +8510,12 @@ a.@{btn-prefix-cls} {
           .iconfont-size-under-12px(10px);
         }
       }
+    }
+
+    &-item-group-list {
+      margin: 0 8px;
+      padding: 0;
+      list-style: none;
     }
 
     &-submenu-title {
@@ -8394,6 +8542,11 @@ a.@{btn-prefix-cls} {
         background-color: @component-background;
         cursor: not-allowed;
       }
+    }
+
+    // https://github.com/ant-design/ant-design/issues/19264
+    &-submenu-selected &-submenu-title {
+      color: @primary-color;
     }
   }
 
@@ -8793,7 +8946,7 @@ a.@{btn-prefix-cls} {
 
     position: relative;
     top: -0.5px;
-    margin: 0 8px 0 2px;
+    margin: 0 @form-item-label-colon-margin-right 0 @form-item-label-colon-margin-left;
   }
 
   &.@{form-prefix-cls}-item-no-colon::after {
@@ -8882,11 +9035,22 @@ a.@{btn-prefix-cls} {
 form {
   .has-feedback {
     .@{ant-prefix}-input {
-      padding-right: 24px;
+      padding-right: @input-padding-horizontal-base + @input-affix-width;
     }
 
-    .@{ant-prefix}-input-password-icon {
-      margin-right: 18px;
+    // https://github.com/ant-design/ant-design/issues/19884
+    .@{ant-prefix}-input-affix-wrapper {
+      .@{ant-prefix}-input-suffix {
+        padding-right: 18px;
+      }
+      .@{ant-prefix}-input {
+        padding-right: @input-padding-horizontal-base + @input-affix-width * 2;
+      }
+      &.@{ant-prefix}-input-affix-wrapper-input-with-clear-btn {
+        .@{ant-prefix}-input {
+          padding-right: @input-padding-horizontal-base + @input-affix-width * 3;
+        }
+      }
     }
 
     // Fix overlapping between feedback icon and <Select>'s arrow.
@@ -8897,7 +9061,7 @@ form {
     :not(.@{ant-prefix}-input-group-addon)
       > .@{ant-prefix}-select
       .@{ant-prefix}-select-selection__clear {
-      right: 28px;
+      right: (@form-component-height / 2) + @form-feedback-icon-size - 2px;
     }
     > .@{ant-prefix}-select .@{ant-prefix}-select-selection-selected-value,
     :not(.@{ant-prefix}-input-group-addon)
@@ -8908,17 +9072,17 @@ form {
 
     .@{ant-prefix}-cascader-picker {
       &-arrow {
-        margin-right: 17px;
+        margin-right: (@form-component-height / 2) + @form-feedback-icon-size - 13px;
       }
       &-clear {
-        right: 28px;
+        right: (@form-component-height / 2) + @form-feedback-icon-size - 2px;
       }
     }
 
     // Fix issue: https://github.com/ant-design/ant-design/issues/7854
     .@{ant-prefix}-input-search:not(.@{ant-prefix}-input-search-enter-button) {
       .@{ant-prefix}-input-suffix {
-        right: 28px;
+        right: (@form-component-height / 2) + @form-feedback-icon-size - 2px;
       }
     }
 
@@ -8927,7 +9091,7 @@ form {
     .@{ant-prefix}-time-picker {
       &-icon,
       &-clear {
-        right: 28px;
+        right: (@form-component-height / 2) + @form-feedback-icon-size - 2px;
       }
     }
   }
@@ -9193,8 +9357,13 @@ form {
     }
   }
 
-  .@{ant-prefix}-cascader-picker:focus .@{ant-prefix}-cascader-input {
-    .active(@warning-color);
+  .@{ant-prefix}-cascader-picker {
+    &:focus .@{ant-prefix}-cascader-input {
+      .active(@warning-color);
+    }
+    &:hover .@{ant-prefix}-cascader-input {
+      border-color: @warning-color;
+    }
   }
 }
 
@@ -9267,8 +9436,13 @@ form {
     }
   }
 
-  .@{ant-prefix}-cascader-picker:focus .@{ant-prefix}-cascader-input {
-    .active(@error-color);
+  .@{ant-prefix}-cascader-picker {
+    &:focus .@{ant-prefix}-cascader-input {
+      .active(@error-color);
+    }
+    &:hover .@{ant-prefix}-cascader-input {
+      border-color: @error-color;
+    }
   }
 
   // transfer
@@ -9526,25 +9700,16 @@ form {
 }
 
 .@{ant-prefix}-input-clear-icon {
-  color: @disabled-color;
-  font-size: @font-size-sm;
-  // https://github.com/ant-design/ant-design/pull/18151
-  // https://codesandbox.io/s/wizardly-sun-u10br
+  .clear-icon;
   vertical-align: 0;
-  cursor: pointer;
-  transition: color 0.3s;
+}
 
-  &:hover {
-    color: @text-color-secondary;
-  }
-
-  &:active {
-    color: @text-color;
-  }
-
-  + i {
-    margin-left: 6px;
-  }
+.@{ant-prefix}-input-textarea-clear-icon {
+  .clear-icon;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 8px 8px 0 0;
 }
 
 @search-prefix: ~'@{ant-prefix}-input-search';
@@ -9570,7 +9735,6 @@ form {
       border: 0;
 
       .@{search-prefix}-button {
-        width: 100%;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
       }
@@ -9626,7 +9790,7 @@ form {
   }
 
   &:hover {
-    .hover();
+    .hover(@input-number-hover-border-color);
   }
 
   &-focused {
@@ -9904,6 +10068,11 @@ form {
   &-pagination {
     margin-top: 24px;
     text-align: right;
+
+    // https://github.com/ant-design/ant-design/issues/20037
+    .@{ant-prefix}-pagination-options {
+      text-align: left;
+    }
   }
 
   &-more {
@@ -10562,6 +10731,14 @@ form {
     }
   }
 
+  // https://github.com/ant-design/ant-design/issues/19809
+  &-item > .@{ant-prefix}-badge > a {
+    color: @menu-item-color;
+    &:hover {
+      color: @menu-highlight-color;
+    }
+  }
+
   &-item-divider {
     height: 1px;
     overflow: hidden;
@@ -10648,7 +10825,7 @@ form {
     .@{iconfont-css-prefix} {
       min-width: 14px;
       margin-right: 10px;
-      font-size: @font-size-base;
+      font-size: @menu-icon-size;
       transition: font-size 0.15s @ease-out, margin 0.3s @ease-in-out;
       + span {
         opacity: 1;
@@ -10852,7 +11029,7 @@ form {
 
     // disable margin collapsed
     .@{menu-prefix-cls}-submenu {
-      padding-bottom: 0.01px;
+      padding-bottom: 0.02px;
     }
 
     .@{menu-prefix-cls}-item:not(:last-child) {
@@ -10899,14 +11076,14 @@ form {
       > .@{menu-prefix-cls}-submenu-title,
     > .@{menu-prefix-cls}-submenu > .@{menu-prefix-cls}-submenu-title {
       left: 0;
-      padding: 0 (@menu-collapsed-width - 16px) / 2 !important;
+      padding: 0 (@menu-collapsed-width - @menu-icon-size-lg) / 2 !important;
       text-overflow: clip;
       .@{menu-prefix-cls}-submenu-arrow {
         display: none;
       }
       .@{iconfont-css-prefix} {
         margin: 0;
-        font-size: 16px;
+        font-size: @menu-icon-size-lg;
         line-height: @menu-item-height;
         + span {
           display: inline-block;
@@ -11234,7 +11411,7 @@ form {
 
   &-title {
     margin: 0;
-    color: @heading-color;
+    color: @modal-heading-color;
     font-weight: 500;
     font-size: @font-size-lg;
     line-height: 22px;
@@ -11649,23 +11826,27 @@ form {
 
 .@{pageheader-prefix-cls} {
   .reset-component;
-
   position: relative;
-  padding: @page-header-padding;
+  padding: @page-header-padding-vertical @page-header-padding;
+  background-color: @component-background;
+
+  &-ghost {
+    background-color: inherit;
+  }
 
   &.has-breadcrumb {
     padding-top: @page-header-padding-breadcrumb;
   }
 
   &.has-footer {
-    padding-bottom: @page-header-padding-vertical;
+    padding-bottom: 0;
   }
 
   &-back {
     float: left;
-    margin: 6px 0;
+    margin: 8px 0;
     margin-right: 16px;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 1;
     &-button {
       .operation-unit();
@@ -11694,7 +11875,7 @@ form {
       padding-right: 12px;
       color: @heading-color;
       font-weight: 600;
-      font-size: @heading-3-size;
+      font-size: @heading-4-size;
       line-height: 32px;
     }
 
@@ -11729,7 +11910,7 @@ form {
   }
 
   &-content {
-    padding-top: 16px;
+    padding-top: 12px;
     overflow: hidden;
   }
 
@@ -13086,7 +13267,7 @@ span.@{radio-prefix-cls} + * {
   &-selection {
     display: block;
     box-sizing: border-box;
-    background-color: @component-background;
+    background-color: @select-background;
     border: @border-width-base @border-style-base @select-border-color;
     // strange align fix for chrome but works
     // https://gw.alipayobjects.com/zos/rmsportal/VFTfKXJuogBAXcvfAUWJ.gif
@@ -13396,10 +13577,6 @@ span.@{radio-prefix-cls} + * {
     }
   }
 
-  &-allow-clear &-selection--single &-selection-selected-value {
-    padding-right: 16px;
-  }
-
   &-allow-clear &-selection--multiple &-selection__rendered,
   &-show-arrow &-selection--multiple &-selection__rendered {
     margin-right: 20px; // In case that clear button will overlap content
@@ -13487,6 +13664,7 @@ span.@{radio-prefix-cls} + * {
   &-menu {
     max-height: 250px;
     margin-bottom: 0;
+    padding: @select-dropdown-edge-child-vertical-padding 0;  //Change
     padding-left: 0; // Override default ul/ol
     overflow: auto;
     list-style: none;
@@ -13517,11 +13695,12 @@ span.@{radio-prefix-cls} + * {
     &-item {
       position: relative;
       display: block;
-      padding: 5px @control-padding-horizontal;
+      padding: @select-dropdown-vertical-padding @control-padding-horizontal;
       overflow: hidden;
       color: @text-color;
       font-weight: normal;
-      line-height: 22px;
+      font-size: @select-dropdown-font-size;
+      line-height: @select-dropdown-line-height;
       white-space: nowrap;
       text-overflow: ellipsis;
       cursor: pointer;
@@ -13532,11 +13711,15 @@ span.@{radio-prefix-cls} + * {
       }
 
       &:first-child {
-        border-radius: @border-radius-base @border-radius-base 0 0;
+        & when (@select-dropdown-edge-child-vertical-padding = 0) {
+          border-radius: @border-radius-base @border-radius-base 0 0;
+        }
       }
 
       &:last-child {
-        border-radius: 0 0 @border-radius-base @border-radius-base;
+        & when (@select-dropdown-edge-child-vertical-padding = 0) {
+          border-radius: 0 0 @border-radius-base @border-radius-base;
+        }
       }
 
       &-selected {
@@ -13782,7 +13965,6 @@ span.@{radio-prefix-cls} + * {
     width: 14px;
     height: 14px;
     margin-top: -5px;
-    margin-left: -7px;
     background-color: @slider-handle-background-color;
     border: solid @slider-handle-border-width @slider-handle-color;
     border-radius: 50%;
@@ -13927,6 +14109,13 @@ span.@{radio-prefix-cls} + * {
       top: auto;
       left: 2px;
       margin-bottom: -4px;
+    }
+  }
+
+  &-tooltip {
+    // https://github.com/ant-design/ant-design/issues/20014
+    .@{ant-prefix}-tooltip-inner {
+      min-width: unset;
     }
   }
 }
@@ -14208,7 +14397,7 @@ span.@{radio-prefix-cls} + * {
 @steps-dot-size: 8px;
 @steps-current-dot-size: 10px;
 @steps-desciption-max-width: 140px;
-@steps-nav-content-max-width: @steps-desciption-max-width;
+@steps-nav-content-max-width: auto;
 
 .@{steps-prefix-cls} {
   .reset-component;
@@ -14574,25 +14763,30 @@ span.@{radio-prefix-cls} + * {
   .@{steps-prefix-cls}-item {
     overflow: visible;
     &-tail {
-      margin-left: 51px;
+      margin-left: 58px;
       padding: 3.5px 24px;
     }
     &-content {
       display: block;
-      // icon左边距离+一半icon宽度，是content一半的宽度，垂直对齐icon
-      width: (@steps-icon-size / 2 + 36px) * 2;
+      width: (@steps-icon-size / 2 + 42px) * 2;
       margin-top: 8px;
       text-align: center;
     }
     &-icon {
       display: inline-block;
-      margin-left: 36px;
+      margin-left: 42px;
     }
     &-title {
       padding-right: 0;
       &::after {
         display: none;
       }
+    }
+    &-subtitle {
+      display: block;
+      margin-bottom: 4px;
+      margin-left: 0;
+      line-height: @line-height-base;
     }
   }
   &.@{steps-prefix-cls}-small:not(.@{steps-prefix-cls}-dot) {
@@ -15040,6 +15234,10 @@ span.@{radio-prefix-cls} + * {
     border-spacing: 0;
   }
 
+  &-layout-fixed table {
+    table-layout: fixed;
+  }
+
   &-thead > tr > th {
     color: @table-header-color;
     font-weight: 500;
@@ -15048,7 +15246,7 @@ span.@{radio-prefix-cls} + * {
     border-bottom: @border-width-base @border-style-base @border-color-split;
     transition: background 0.3s ease;
 
-    &[colspan] {
+    &[colspan]:not([colspan='1']) {
       text-align: center;
     }
 
@@ -15172,6 +15370,7 @@ span.@{radio-prefix-cls} + * {
 
     .@{table-prefix-cls}-header-column {
       display: inline-block;
+      max-width: 100%;
       vertical-align: top;
 
       .@{table-prefix-cls}-column-sorters {
@@ -15331,6 +15530,7 @@ span.@{radio-prefix-cls} + * {
   &-thead > tr > th,
   &-tbody > tr > td {
     padding: @table-padding-vertical @table-padding-horizontal;
+    overflow-wrap: break-word;
   }
 
   &-expand-icon-th,
@@ -15474,10 +15674,6 @@ span.@{radio-prefix-cls} + * {
       overflow: hidden;
     }
 
-    .@{ant-prefix}-checkbox-wrapper + span {
-      padding-left: 8px;
-    }
-
     > .@{ant-prefix}-dropdown-menu > .@{ant-prefix}-dropdown-menu-item:last-child,
     > .@{ant-prefix}-dropdown-menu
       > .@{ant-prefix}-dropdown-menu-submenu:last-child
@@ -15582,6 +15778,22 @@ span.@{radio-prefix-cls} + * {
         content: '.';
       }
     }
+
+    &-cell-ellipsis,
+    &-cell-ellipsis .@{table-prefix-cls}-column-title {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-cell-ellipsis .@{table-prefix-cls}-column-title {
+      display: block;
+    }
+
+    &-cell-break-word {
+      word-wrap: break-word;
+      word-break: break-word;
+    }
   }
 
   tr&-expanded-row {
@@ -15603,11 +15815,11 @@ span.@{radio-prefix-cls} + * {
     overflow: auto;
     overflow-x: hidden;
     table {
-      width: auto;
       min-width: 100%;
 
       // https://github.com/ant-design/ant-design/issues/14545
-      .@{table-prefix-cls}-fixed-columns-in-body {
+      // https://github.com/ant-design/ant-design/issues/19491
+      .@{table-prefix-cls}-fixed-columns-in-body:not([colspan]) {
         visibility: hidden;
       }
     }
@@ -15645,7 +15857,12 @@ span.@{radio-prefix-cls} + * {
     // https://stackoverflow.com/a/54101063
     // https://github.com/react-component/table/pull/333
     scrollbar-color: transparent transparent;
+    min-width: unset;
+
     &::-webkit-scrollbar {
+      // set min width to window chrome scrollbar
+      // https://github.com/ant-design/ant-design/issues/19952#issuecomment-559367149
+      min-width: inherit;
       background-color: transparent;
     }
   }
@@ -15759,6 +15976,13 @@ span.@{radio-prefix-cls} + * {
   }
 }
 
+.@{table-prefix-cls}-filter-dropdown,
+.@{table-prefix-cls}-filter-dropdown-submenu {
+  .@{ant-prefix}-checkbox-wrapper + span {
+    padding-left: 8px;
+  }
+}
+
 /**
 * Another fix of Firefox:
 */
@@ -15776,7 +16000,7 @@ span.@{radio-prefix-cls} + * {
 
 .@{table-prefix-cls}-middle {
   > .@{table-prefix-cls}-title,
-  > .@{table-prefix-cls}-footer {
+  > .@{table-prefix-cls}-content > .@{table-prefix-cls}-footer {
     padding: @table-padding-vertical-md @table-padding-horizontal-md;
   }
   > .@{table-prefix-cls}-content {
@@ -15812,13 +16036,21 @@ span.@{radio-prefix-cls} + * {
   border-radius: @table-border-radius-base;
 
   > .@{table-prefix-cls}-title,
-  > .@{table-prefix-cls}-footer {
+  > .@{table-prefix-cls}-content > .@{table-prefix-cls}-footer {
     padding: @table-padding-vertical-sm @table-padding-horizontal-sm;
   }
 
   > .@{table-prefix-cls}-title {
     top: 0;
     border-bottom: @border-width-base @border-style-base @border-color-split;
+  }
+
+  > .@{table-prefix-cls}-content > .@{table-prefix-cls}-footer {
+    background-color: transparent;
+    border-top: @border-width-base @border-style-base @border-color-split;
+    &::before {
+      background-color: transparent;
+    }
   }
 
   > .@{table-prefix-cls}-content {
@@ -15846,7 +16078,7 @@ span.@{radio-prefix-cls} + * {
         padding: @table-padding-vertical-sm @table-padding-horizontal-sm;
       }
       > .@{table-prefix-cls}-thead > tr > th {
-        background-color: transparent;
+        background-color: @table-header-bg-sm;
       }
       > .@{table-prefix-cls}-thead > tr {
         border-bottom: @border-width-base @border-style-base @border-color-split;
@@ -15872,7 +16104,8 @@ span.@{radio-prefix-cls} + * {
     }
 
     .@{table-prefix-cls}-header {
-      background-color: @component-background;
+      background-color: @table-header-bg-sm;
+      border-radius: @table-border-radius-base @table-border-radius-base 0 0;
     }
 
     .@{table-prefix-cls}-placeholder,
@@ -15897,7 +16130,6 @@ span.@{radio-prefix-cls} + * {
     .@{table-prefix-cls}-footer {
       border: 0;
       border-top: @border-width-base @border-style-base @border-color-split;
-      border-right: @border-width-base @border-style-base @border-color-split;
       &::before {
         display: none;
       }
@@ -15909,7 +16141,7 @@ span.@{radio-prefix-cls} + * {
       border-left: 0;
     }
 
-    .@{table-prefix-cls}-thead > tr:only-child > th:last-child,
+    .@{table-prefix-cls}-thead > tr > th.@{table-prefix-cls}-row-cell-last,
     .@{table-prefix-cls}-tbody > tr > td:last-child {
       border-right: none;
     }
@@ -15930,6 +16162,14 @@ span.@{radio-prefix-cls} + * {
   tr.@{table-prefix-cls}-expanded-row td > .@{table-prefix-cls}-wrapper {
     margin: -@table-padding-vertical-sm -@table-padding-horizontal / 2 -@table-padding-vertical-sm -
       1px;
+  }
+
+  // https://github.com/ant-design/ant-design/issues/19287#issuecomment-544368967
+  &.@{table-prefix-cls}-fixed-header
+    > .@{table-prefix-cls}-content
+    > .@{table-prefix-cls}-scroll
+    > .@{table-prefix-cls}-body {
+    border-radius: 0 0 @table-border-radius-base @table-border-radius-base;
   }
 }
 
@@ -16144,6 +16384,7 @@ span.@{radio-prefix-cls} + * {
     left: 0;
     z-index: 1;
     box-sizing: border-box;
+    width: 0;
     height: 2px;
     background-color: @tabs-ink-bar-color;
     transform-origin: 0 0;
@@ -16445,7 +16686,7 @@ span.@{radio-prefix-cls} + * {
       bottom: auto;
       left: auto;
       width: 2px;
-      height: auto;
+      height: 0;
     }
 
     .@{tab-prefix-cls}-tab-next {
@@ -16518,12 +16759,12 @@ span.@{radio-prefix-cls} + * {
 
 .@{tab-prefix-cls}-top .@{tab-prefix-cls}-ink-bar-animated,
 .@{tab-prefix-cls}-bottom .@{tab-prefix-cls}-ink-bar-animated {
-  transition: transform 0.3s @ease-in-out, width 0.3s @ease-in-out, left 0.3s @ease-in-out;
+  transition: transform 0.3s @ease-in-out, width 0.2s @ease-in-out, left 0.3s @ease-in-out;
 }
 
 .@{tab-prefix-cls}-left .@{tab-prefix-cls}-ink-bar-animated,
 .@{tab-prefix-cls}-right .@{tab-prefix-cls}-ink-bar-animated {
-  transition: transform 0.3s @ease-in-out, height 0.3s @ease-in-out, top 0.3s @ease-in-out;
+  transition: transform 0.3s @ease-in-out, height 0.2s @ease-in-out, top 0.3s @ease-in-out;
 }
 
 // No animation
@@ -16774,6 +17015,10 @@ span.@{radio-prefix-cls} + * {
       &:hover {
         background: transparent;
         cursor: not-allowed;
+      }
+      &:focus {
+        color: @btn-disable-color;
+        font-weight: inherit;
       }
     }
   }
@@ -17335,7 +17580,7 @@ span.@{radio-prefix-cls} + * {
     }
 
     &-search {
-      padding: 0 @control-padding-horizontal-sm;
+      padding: 0 24px 0 @control-padding-horizontal-sm;
       &-action {
         position: absolute;
         top: 12px;
@@ -17757,6 +18002,10 @@ span.@{radio-prefix-cls} + * {
         cursor: pointer;
       }
 
+      &.@{tree-prefix-cls}-iconEle:empty {
+        display: none;
+      }
+
       &.@{tree-prefix-cls}-switcher {
         position: relative;
 
@@ -18071,33 +18320,6 @@ span.@{radio-prefix-cls} + * {
 }
 
 @typography-prefix-cls: ~'@{ant-prefix}-typography';
-@typography-title-margin-top: 1.2em;
-
-// =============== Common ===============
-.typography-paragraph() {
-  margin-bottom: 1em;
-}
-
-.typography-title(@fontSize; @lineHeight) {
-  margin-bottom: 0.5em;
-  color: @heading-color;
-  font-weight: @typography-title-font-weight;
-  font-size: @fontSize;
-  line-height: @lineHeight;
-}
-
-.typography-title-1() {
-  .typography-title(@heading-1-size, 1.23);
-}
-.typography-title-2() {
-  .typography-title(@heading-2-size, 1.35);
-}
-.typography-title-3() {
-  .typography-title(@heading-3-size, 1.35);
-}
-.typography-title-4() {
-  .typography-title(@heading-4-size, 1.4);
-}
 
 // =============== Basic ===============
 .@{typography-prefix-cls} {
@@ -18251,6 +18473,11 @@ span.@{radio-prefix-cls} + * {
       bottom: 8px;
       color: @text-color-secondary;
       pointer-events: none;
+    }
+
+    // Fix Editable Textarea flash in Firefox
+    textarea {
+      -moz-transition: none;
     }
   }
 
@@ -18433,6 +18660,16 @@ span.@{radio-prefix-cls} + * {
 .@{upload-prefix-cls}-list {
   .reset-component;
   .clearfix;
+  &-item-list-type-text {
+    &:hover {
+      .@{upload-prefix-cls}-list-item-name-icon-count-1 {
+        padding-right: 14px;
+      }
+      .@{upload-prefix-cls}-list-item-name-icon-count-2 {
+        padding-right: 28px;
+      }
+    }
+  }
   &-item {
     position: relative;
     height: 22px;
@@ -18445,6 +18682,25 @@ span.@{radio-prefix-cls} + * {
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    &-name-icon-count-1 {
+      padding-right: 14px;
+    }
+
+    &-card-actions {
+      position: absolute;
+      right: 0;
+      opacity: 0;
+      &.picture {
+        top: 25px;
+        line-height: 1;
+        opacity: 1;
+      }
+      .anticon {
+        padding-right: 5px;
+        color: rgba(0, 0, 0, 0.45);
+      }
     }
 
     &-info {
@@ -18491,14 +18747,21 @@ span.@{radio-prefix-cls} + * {
       opacity: 1;
     }
 
+    &:hover &-card-actions {
+      opacity: 1;
+    }
+
     &-error,
     &-error .@{iconfont-css-prefix}-paper-clip,
     &-error &-name {
       color: @error-color;
     }
 
-    &-error .@{iconfont-css-prefix}-close {
-      color: @error-color !important;
+    &-error &-card-actions {
+      .anticon {
+        padding-right: 5px;
+        color: @error-color;
+      }
       opacity: 1;
     }
 
@@ -18585,6 +18848,14 @@ span.@{radio-prefix-cls} + * {
       transition: all 0.3s;
     }
 
+    .@{upload-item}-name-icon-count-1 {
+      padding-right: 18px;
+    }
+
+    .@{upload-item}-name-icon-count-2 {
+      padding-right: 36px;
+    }
+
     .@{upload-item}-uploading .@{upload-item}-name {
       line-height: 28px;
     }
@@ -18608,6 +18879,12 @@ span.@{radio-prefix-cls} + * {
   &-picture-card {
     &.@{upload-prefix-cls}-list::after {
       display: none;
+    }
+    &-container {
+      float: left;
+      width: @upload-picture-card-size;
+      height: @upload-picture-card-size;
+      margin: 0 8px 8px 0;
     }
     .@{upload-item} {
       float: left;
@@ -18648,6 +18925,7 @@ span.@{radio-prefix-cls} + * {
       transition: all 0.3s;
 
       .@{iconfont-css-prefix}-eye-o,
+      .@{iconfont-css-prefix}-download,
       .@{iconfont-css-prefix}-delete {
         z-index: 10;
         width: 16px;
@@ -18685,6 +18963,8 @@ span.@{radio-prefix-cls} + * {
     }
 
     .anticon-picture + .@{upload-item}-name {
+      position: absolute;
+      bottom: 10px;
       display: block;
     }
 

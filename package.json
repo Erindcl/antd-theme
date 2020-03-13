@@ -70,7 +70,7 @@
   "dependencies": {
     "@ant-design/aliyun-theme": "0.0.4",
     "@ant-design/dark-theme": "^0.2.2",
-    "antd": "^3.23.6",
+    "antd": "3.26.5",
     "axios": "^0.18.0",
     "jszip": "^3.2.2",
     "mobx": "^5.1.0",

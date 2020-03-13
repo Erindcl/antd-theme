@@ -10,7 +10,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import 'moment/locale/zh-cn';
 
 // import 'stylesheet/app.less';
-import 'stylesheet/theme.less';
+import 'stylesheet/dt-theme/index.less';
 
 const App = () => (
   <Provider {...store}>
